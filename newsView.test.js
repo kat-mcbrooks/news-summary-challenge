@@ -6,14 +6,9 @@
  const NewsView = require('./newsView')
  const NewsModel = require('./newsModel');
  
- beforeEach(() => {
-
-  model = new NewsModel();
-  
- });
- 
  describe('NewsView', () => {
-  const newsArray = [
+
+   const newsArray = [
     {
       'fields':{
         'headline': 'test headline 1', 
@@ -29,12 +24,15 @@
       'webUrl': 'https://www.theguardian.com/sport/blog/2022/feb/02/at-last-the-inventors-of-modern-skiing-have-something-to-cheer-dave-ryding'
     }
   ] 
-  
+  beforeEach(() => {
+    model = new NewsModel();
+    model.setNews(newsArray);
+    });
+
   it('displays multiple news headlines in one page', () => { //user
      document.body.innerHTML = fs.readFileSync('./index.html');
   
      const view = new NewsView(model);
-     model.setNews(newsArray);
      view.displayNews();
     
      expect(document.querySelectorAll('.headline-link').length).toEqual(2);
@@ -43,9 +41,8 @@
  
    it('creates a headline element with link to the original article for each article', () => {
      document.body.innerHTML = fs.readFileSync('./index.html');
-    
+   
      const view = new NewsView(model);
-     model.setNews(newsArray);
      view.displayNews();
 
      const allLinks = document.querySelectorAll('a');
@@ -59,7 +56,6 @@
   document.body.innerHTML = fs.readFileSync('./index.html');
  
   const view = new NewsView(model);
-  model.setNews(newsArray);
   view.displayNews();
 
   const allImages = document.querySelectorAll('img');
