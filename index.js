@@ -1,5 +1,4 @@
-// const dotenv = require('dotenv')
-// dotenv.config()
+
 
 const NewsApi = require('./newsApi')
 const NewsModel = require('./newsModel');
@@ -13,7 +12,7 @@ console.log('News summary app is running')
 
 api.loadNews((data) => { 
   model.setNews(data.response.results);
-  //console.log('is this an array with 10 articles', model.getNews()) //yes each element is a js object
+ // console.log('is this an array with 10 articles', model.getNews()) //yes each element is a js object
   view.displayNews();
 });
 //alternative, using promises:

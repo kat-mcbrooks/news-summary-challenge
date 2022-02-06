@@ -1,8 +1,15 @@
 const NewsApi = require('./newsApi');
+const apiKey = require('./apikey');
 
 describe('testing NewsApi class', () => {
   beforeEach(() => {
     fetch.resetMocks()
+  })
+  it('inserts a keyword into guardian url', () => {
+    const api = new NewsApi();
+    api.setUrl('environment');
+    //api.setUrl()
+    expect(api.guardianUrl).toBe(`https://content.guardianapis.com/search?page=1&q=environment&query-fields=headline&show-fields=thumbnail,headline,byline&order-by=newest&api-key=${apiKey}`);
   })
 
   it('uses fetch to call guardian api and returns headlines', () => {

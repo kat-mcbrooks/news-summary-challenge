@@ -5,7 +5,9 @@
  const fs = require('fs');
  const NewsView = require('./newsView')
  const NewsModel = require('./newsModel');
- 
+ const NewsApi = require('./newsApi');
+ //jest.mock('./newsApi');
+
  describe('NewsView', () => {
 
    const newsArray = [
@@ -27,9 +29,10 @@
   beforeEach(() => {
     model = new NewsModel();
     model.setNews(newsArray);
+    api = new NewsApi();
     });
 
-  it('displays multiple news headlines in one page', () => { //user
+  it('displays multiple news headlines in one page', () => { 
      document.body.innerHTML = fs.readFileSync('./index.html');
   
      const view = new NewsView(model);
@@ -47,19 +50,29 @@
 
      const allLinks = document.querySelectorAll('a');
      expect(allLinks[0].href).toEqual("https://www.theguardian.com/lifeandstyle/2022/feb/05/concrete-beach-pablo-albarengas-best-phone-picture");
-
-
  
    });
- //    expect(allLinks[1].fields.thumbnail).toEqual('test_pic_2');
- it('creates an image element for each news article', () => {
-  document.body.innerHTML = fs.readFileSync('./index.html');
  
-  const view = new NewsView(model);
-  view.displayNews();
+  it('creates an image element for each news article', () => {
+    document.body.innerHTML = fs.readFileSync('./index.html');
+  
+    const view = new NewsView(model);
+    view.displayNews();
 
-  const allImages = document.querySelectorAll('img');
-  expect(allImages.length).toBe(2);
-  expect(allImages[1].src).toEqual("https://media.guim.co.uk/1e2ab1ced5da6ecf8d7fcca9f87d5398c1d22336/0_119_6480_3888/500.jpg");
- });
+    const allImages = document.querySelectorAll('img');
+    expect(allImages.length).toBe(2);
+    expect(allImages[1].src).toEqual("https://media.guim.co.uk/1e2ab1ced5da6ecf8d7fcca9f87d5398c1d22336/0_119_6480_3888/500.jpg");
+    });
+
+  it('adds a keyword to apiUrl through user input', () => {
+    document.body.innerHTML = fs.readFileSync('./index.html');
+    const view = new NewsView(model, api);
+  
+    const filterInputEl = document.querySelector('#filter-input');
+    const filterBtnEl = document.querySelector('#filter-btn');
+    filterInputEl.value = "environment";
+    filterBtnEl.click();
+
+    expect(api.setUrl('environment')).toHaveBeenCalled;
+  })
  })

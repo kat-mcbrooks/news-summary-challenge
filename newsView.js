@@ -3,13 +3,16 @@ class NewsView {
     this.model = model; // new NewsModel and new ApiModel are dependency injected in within index.js main file
     this.api = api;
     this.maincontainerEl = document.querySelector('#main-container');
-    //const submitButtonEl = document.querySelector('#submit-button');
-    //const repoInputEl = document.querySelector('#repo-name-input');
 
-    //submitButtonEl.addEventListener('click', () => {
-      //const repoName = repoInputEl.value;
+    const filterBtnEl = document.querySelector('#filter-btn');
+    const filterInputEl = document.querySelector('#filter-input');
 
-    }
+    filterBtnEl.addEventListener('click', () => {
+      const keyword = filterInputEl.value;
+      this.addSearchFilter(keyword);
+      document.querySelector('#filter-input').value = "";
+    })
+  }
 
   displayNews() {
     // document.querySelectorAll('.news').forEach(element => {
@@ -35,6 +38,15 @@ class NewsView {
       thumbnailEl.src = article.fields.thumbnail;
       this.maincontainerEl.append(thumbnailEl);
     }) 
+  }
+
+  addSearchFilter(keyword) {
+    this.api.setUrl(keyword);
+    console.log('before reload in addSearch', this.api.guardianUrl);
+    document.location.reload();
+    //console.log('after reload in addSearch', this.api.guardianUrl);
+
+    //this.api.loadNews()
   }
 }
 module.exports = NewsView;
