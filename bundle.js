@@ -76,19 +76,23 @@
             element.remove();
           });
           const news = this.model.getNews();
+          const newsArray = [];
           console.log("in the display method", news);
           news.forEach((article) => {
             const newsEl = document.createElement("div");
-            newsEl.className = "article";
-            this.mainContainerEl.append(newsEl);
+            newsEl.className = "headline";
             const linkEl = document.createElement("a");
             linkEl.innerText = article.fields.headline;
+            linkEl.className = "link";
             linkEl.setAttribute("href", article.webUrl);
             const thumbnailEl = document.createElement("img");
             thumbnailEl.src = article.fields.thumbnail;
             newsEl.appendChild(linkEl);
+            newsEl.append(document.createElement("br"));
             newsEl.appendChild(thumbnailEl);
+            newsArray.push(newsEl);
           });
+          this.maincontainerEl.replaceChildren(...newsArray);
         }
         addSearchFilter(keyword) {
           this.api.loadNews(keyword, (data) => {

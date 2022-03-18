@@ -1,20 +1,26 @@
 # News Headlines challenge
 
-I created a javascript single page web app that uses the Guardian API to display the latest news headlines, with a thumbnail image. 
+**JavaScript | Jest**
 
-Clicking on a headline links the user to the actual article page on the Guardian's website. A user can input a keyword 
+I created a single page web app that uses the Guardian API to display the latest news headlines, with a thumbnail image, bundled using **esbuild**. I used the [`jest-fetch-mock`](https://www.npmjs.com/package/jest-fetch-mock) module to mock API requests.
 
-### Technologies
+Clicking on a headline links the user to the actual article page on the Guardian's website. A user can input a keyword
 
-Frontend JavaScript, HTML, Jest testing library and [`jest-fetch-mock`](https://www.npmjs.com/package/jest-fetch-mock) module to mock `fetch` requests, esbuild package to bundle files into a main file script. 
+### Instructions for running the app
+
+1. Install dependencies using npm install or yarn
+2. `$ npm run build` to ensure esbuild is watching for any changes
+3. Open the app in browser
+   `$ open index.html`
+4. Enter a keyword and click search headlines to filter for a particular topic
 
 ### With more time, I would plan to:
 
 - Modify the filter/search feature so that the user could enter more than one keyword and an optional date range
-- Instead of using simply pulling the results from page 1 (via Guardian API), I would have modified the loadNews method to pull today's headlines
-- Worked on the CSS to improve the asthetic of the page
+- Instead of using simply pulling the results from page 1 (via Guardian API), I would modify the loadNews method to pull today's headlines
+- Work on the CSS to improve the aesthetic of the page
 
-## User Stories
+### User Stories
 
 ```
 As a busy politician
@@ -40,29 +46,6 @@ So I can search what I want to read about
 I can specify a search query on the page and get articles matching this search
 ```
 
-### Stretch user stories (not yet implemented)
+### App screenshot
 
-```
-As a busy politician
-So I can quickly read through the essential of today's stories
-I can see a summarised version of of the article 
-```
-
-To get a summary of an article's content, you'll need to use the [Aylien API
-endpoint](https://docs.aylien.com/textapi/endpoints/#summarization), which means
-integrating and calling another HTTP endpoint from a different API. This mean you'll need
-to first fetch articles from the Guardian API, **then** use the Aylien API to summarise
-the content — you'll need to use Promises to call both APIs and to handle the flow of
-control.
-
-```
-As a busy politician
-Just in case my laptop breaks
-I can read the site comfortably on my phone
-```
-
-```
-As a busy politician
-So I make my news reading more fun
-I can see whizzy animations in the app
-```
+![Screenshot](./images/app-screenshot.png)
