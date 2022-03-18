@@ -48,4 +48,4 @@ I can specify a search query on the page and get articles matching this search
 
 ### App screenshot
 
-![Screenshot](./images/app-screenshot.png)
+![Screenshot](./images/screenshot.png)
