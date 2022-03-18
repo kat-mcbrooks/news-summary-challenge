@@ -1,3 +1,5 @@
+const NewsModel = require("./newsModel");
+
 class NewsView {
   constructor(model, api) {
     this.model = model; // new NewsModel and new ApiModel are dependency injected in within index.js main file
@@ -9,8 +11,9 @@ class NewsView {
 
     filterBtnEl.addEventListener('click', () => {
       const keyword = filterInputEl.value;
+
       this.addSearchFilter(keyword);
-      document.querySelector('#filter-input').value = "";
+      filterInputEl.value = "";
     })
   }
 
@@ -19,31 +22,43 @@ class NewsView {
     //   element.remove();
     // });
 
-    const news = this.model.getNews(); //hoping that each news element is a json object that I can access the properties of 
-    console.log('in the display method', news[0].fields.thumbnail)
-
+    const news = this.model.getNews();
+    const newsArray = [];
+    console.log('in the display method', news);
     news.forEach(article => {
-      // const newsEl = document.createElement('div');
       // newsEl.innerText = news.fields.headline;
       // newsEl.className = 'news';
       // this.maincontainerEl.append(newsEl);
       
-      const headlineEl = document.createElement('a');
-      headlineEl.innerText = article.fields.headline;
-      headlineEl.setAttribute('href', article.webUrl);
-      headlineEl.className = 'headline-link';
-      this.maincontainerEl.append(headlineEl);
+      const linkEl = document.createElement('a');
+      linkEl.innerText = article.fields.headline;
+      linkEl.setAttribute('href', article.webUrl);
+      //linkEl.className = 'headline-link';
+      //this.maincontainerEl.append(headlineEl);
 
       const thumbnailEl = document.createElement('img');
       thumbnailEl.src = article.fields.thumbnail;
-      this.maincontainerEl.append(thumbnailEl);
-    }) 
+      //this.maincontainerEl.append(thumbnailEl);
+      const newsEl = document.createElement('div');
+      newsEl.className = 'headline';
+      newsEl.appendChild(linkEl);
+      newsEl.appendChild(thumbnailEl);
+      newsArray.push(newsEl);
+    })
+    this.maincontainerEl.replaceChildren(...newsArray) 
   }
 
   addSearchFilter(keyword) {
-    this.api.setUrl(keyword);
-    console.log('before reload in addSearch', this.api.guardianUrl);
-    document.location.reload();
+    this.api.loadNews(keyword, (data) => {
+      this.model.reset();
+      this.model.setNews(data.response.results);
+      console.log('in the addSearchFilter method', this.api.guardianUrl);
+      console.log('in the addSearchFilter method', this.model.getNews());
+      this.displayNews();
+      document.reload
+    });
+    //console.log('in addSearchFilter', this.model.getNews());
+   
     //console.log('after reload in addSearch', this.api.guardianUrl);
 
     //this.api.loadNews()

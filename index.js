@@ -10,7 +10,7 @@ const view = new NewsView(model, api);
 
 console.log('News summary app is running')
 
-api.loadNews((data) => { 
+api.loadNews('', (data) => { 
   model.setNews(data.response.results);
  // console.log('is this an array with 10 articles', model.getNews()) //yes each element is a js object
   view.displayNews();

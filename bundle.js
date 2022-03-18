@@ -20,12 +20,9 @@
         constructor() {
           this.guardianUrl = `https://content.guardianapis.com/search?page=1&q=&query-fields=headline&show-fields=thumbnail,headline,byline&order-by=newest&api-key=${apiKey}`;
         }
-        setUrl(keyword) {
-          console.log(keyword);
+        loadNews(keyword, callback) {
+          console.log("in the loadNews method", keyword);
           this.guardianUrl = `https://content.guardianapis.com/search?page=1&q=${keyword}&query-fields=headline&show-fields=thumbnail,headline,byline&order-by=newest&api-key=${apiKey}`;
-          console.log(this.guardianUrl);
-        }
-        loadNews(callback) {
           console.log("in the loadNews method", this.guardianUrl);
           fetch(this.guardianUrl).then((response) => response.json()).then((data) => {
             callback(data);
@@ -60,6 +57,7 @@
   // newsView.js
   var require_newsView = __commonJS({
     "newsView.js"(exports, module) {
+      var NewsModel2 = require_newsModel();
       var NewsView2 = class {
         constructor(model2, api2) {
           this.model = model2;
@@ -70,27 +68,36 @@
           filterBtnEl.addEventListener("click", () => {
             const keyword = filterInputEl.value;
             this.addSearchFilter(keyword);
-            document.querySelector("#filter-input").value = "";
+            filterInputEl.value = "";
           });
         }
         displayNews() {
           const news = this.model.getNews();
-          console.log("in the display method", news[0].fields.thumbnail);
+          const newsArray = [];
+          console.log("in the display method", news);
           news.forEach((article) => {
-            const headlineEl = document.createElement("a");
-            headlineEl.innerText = article.fields.headline;
-            headlineEl.setAttribute("href", article.webUrl);
-            headlineEl.className = "headline-link";
-            this.maincontainerEl.append(headlineEl);
+            const linkEl = document.createElement("a");
+            linkEl.innerText = article.fields.headline;
+            linkEl.setAttribute("href", article.webUrl);
             const thumbnailEl = document.createElement("img");
             thumbnailEl.src = article.fields.thumbnail;
-            this.maincontainerEl.append(thumbnailEl);
+            const newsEl = document.createElement("div");
+            newsEl.className = "headline";
+            newsEl.appendChild(linkEl);
+            newsEl.appendChild(thumbnailEl);
+            newsArray.push(newsEl);
           });
+          this.maincontainerEl.replaceChildren(...newsArray);
         }
         addSearchFilter(keyword) {
-          this.api.setUrl(keyword);
-          console.log("before reload in addSearch", this.api.guardianUrl);
-          document.location.reload();
+          this.api.loadNews(keyword, (data) => {
+            this.model.reset();
+            this.model.setNews(data.response.results);
+            console.log("in the addSearchFilter method", this.api.guardianUrl);
+            console.log("in the addSearchFilter method", this.model.getNews());
+            this.displayNews();
+            document.reload;
+          });
         }
       };
       module.exports = NewsView2;
@@ -105,7 +112,7 @@
   var model = new NewsModel();
   var view = new NewsView(model, api);
   console.log("News summary app is running");
-  api.loadNews((data) => {
+  api.loadNews("", (data) => {
     model.setNews(data.response.results);
     view.displayNews();
   });
