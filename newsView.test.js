@@ -6,7 +6,7 @@
  const NewsView = require('./newsView')
  const NewsModel = require('./newsModel');
  const NewsApi = require('./newsApi');
- //jest.mock('./newsApi');
+ jest.mock('./newsApi');
 
  describe('NewsView', () => {
 
@@ -73,6 +73,6 @@
     filterInputEl.value = "environment";
     filterBtnEl.click();
 
-    expect(api.setUrl('environment')).toHaveBeenCalled;
+    expect(api.guardianUrl('environment')).toHaveBeenCalled;
   })
  })

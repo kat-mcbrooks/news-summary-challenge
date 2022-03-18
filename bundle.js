@@ -72,22 +72,23 @@
           });
         }
         displayNews() {
+          document.querySelectorAll("div.article").forEach((element) => {
+            element.remove();
+          });
           const news = this.model.getNews();
-          const newsArray = [];
           console.log("in the display method", news);
           news.forEach((article) => {
+            const newsEl = document.createElement("div");
+            newsEl.className = "article";
+            this.mainContainerEl.append(newsEl);
             const linkEl = document.createElement("a");
             linkEl.innerText = article.fields.headline;
             linkEl.setAttribute("href", article.webUrl);
             const thumbnailEl = document.createElement("img");
             thumbnailEl.src = article.fields.thumbnail;
-            const newsEl = document.createElement("div");
-            newsEl.className = "headline";
             newsEl.appendChild(linkEl);
             newsEl.appendChild(thumbnailEl);
-            newsArray.push(newsEl);
           });
-          this.maincontainerEl.replaceChildren(...newsArray);
         }
         addSearchFilter(keyword) {
           this.api.loadNews(keyword, (data) => {
@@ -96,7 +97,6 @@
             console.log("in the addSearchFilter method", this.api.guardianUrl);
             console.log("in the addSearchFilter method", this.model.getNews());
             this.displayNews();
-            document.reload;
           });
         }
       };

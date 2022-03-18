@@ -18,17 +18,20 @@ class NewsView {
   }
 
   displayNews() {
-    // document.querySelectorAll('.news').forEach(element => {
-    //   element.remove();
-    // });
+    document.querySelectorAll('div.article').forEach(element => {
+      element.remove();
+    });
 
     const news = this.model.getNews();
-    const newsArray = [];
+    //const newsArray = [];
     console.log('in the display method', news);
     news.forEach(article => {
       // newsEl.innerText = news.fields.headline;
       // newsEl.className = 'news';
       // this.maincontainerEl.append(newsEl);
+      const newsEl = document.createElement('div');
+      newsEl.className = 'article';
+      this.mainContainerEl.append(newsEl);
       
       const linkEl = document.createElement('a');
       linkEl.innerText = article.fields.headline;
@@ -39,13 +42,14 @@ class NewsView {
       const thumbnailEl = document.createElement('img');
       thumbnailEl.src = article.fields.thumbnail;
       //this.maincontainerEl.append(thumbnailEl);
-      const newsEl = document.createElement('div');
-      newsEl.className = 'headline';
+   
       newsEl.appendChild(linkEl);
       newsEl.appendChild(thumbnailEl);
-      newsArray.push(newsEl);
+
+      
+      //newsArray.push(newsEl);
     })
-    this.maincontainerEl.replaceChildren(...newsArray) 
+    //this.maincontainerEl.replaceChildren(...newsArray) 
   }
 
   addSearchFilter(keyword) {
@@ -55,7 +59,7 @@ class NewsView {
       console.log('in the addSearchFilter method', this.api.guardianUrl);
       console.log('in the addSearchFilter method', this.model.getNews());
       this.displayNews();
-      document.reload
+     
     });
     //console.log('in addSearchFilter', this.model.getNews());
    

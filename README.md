@@ -9,7 +9,8 @@ Clicking on a headline links the user to the actual article page on the Guardian
 Frontend JavaScript, HTML, Jest testing library and [`jest-fetch-mock`](https://www.npmjs.com/package/jest-fetch-mock) module to mock `fetch` requests, esbuild package to bundle files into a main file script. 
 
 ### With more time, I would plan to:
-- Modified the filter/search feature so that the user could enter more than one keyword and an optional date range
+
+- Modify the filter/search feature so that the user could enter more than one keyword and an optional date range
 - Instead of using simply pulling the results from page 1 (via Guardian API), I would have modified the loadNews method to pull today's headlines
 - Worked on the CSS to improve the asthetic of the page
 
