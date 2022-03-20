@@ -1,4 +1,4 @@
-# News Headlines challenge
+# News Headlines
 
 **JavaScript | Jest**
 
